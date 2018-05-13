@@ -1,3 +1,5 @@
+import { Button, Col, Container, Form, FormGroup, Row } from 'reactstrap';
+
 import React from 'react';
 import { evaluateRecipePrice } from '../helpers/Calculator';
 
@@ -44,7 +46,7 @@ const initialFormState = {
   currentQuantity: 0
 };
 
-class Form extends React.Component {
+class RecipeForm extends React.Component {
   state = initialFormState;
 
   onChange = (field, e) => {
@@ -83,50 +85,56 @@ class Form extends React.Component {
     const { ingredients } = this.props;
 
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
-          name="name"
-          placeholder="Enter a name"
-          type="text"
-          value={this.state.name}
-          onChange={e => this.onChange('name', e)}
-        />
-        <input
-          name="numberOfPersons"
-          placeholder="Enter a number of persons"
-          type="number"
-          value={this.state.numberOfPersons}
-          onChange={e => this.onChange('numberOfPersons', e)}
-        />
+      <Form onSubmit={this.onSubmit}>
+        <FormGroup>
+          <input
+            name="name"
+            placeholder="Enter a name"
+            type="text"
+            value={this.state.name}
+            onChange={e => this.onChange('name', e)}
+          />
+        </FormGroup>
+        <FormGroup>
+          <input
+            name="numberOfPersons"
+            placeholder="Enter a number of persons"
+            type="number"
+            value={this.state.numberOfPersons}
+            onChange={e => this.onChange('numberOfPersons', e)}
+          />
+        </FormGroup>
         <ul>
           {this.state.components.map((component, id) => (
             <Component component={component} ingredients={ingredients} />
           ))}
         </ul>
-        <select
-          name="ingredientId"
-          value={this.state.currentIngredientId}
-          onChange={e => this.onChange('currentIngredientId', e)}
-        >
-          <option value="">Select an ingredient</option>
-          {ingredients.map(ingredient => (
-            <option key={ingredient.id} value={ingredient.id}>
-              {ingredient.name}
-            </option>
-          ))}
-        </select>
-        <input
-          name="quantity"
-          placeholder="Enter a quantity"
-          type="number"
-          value={this.state.currentQuantity}
-          onChange={e => this.onChange('currentQuantity', e)}
-        />
-        <button onClick={this.addComponent}>Add component</button>
-        <button type="submit" onClick={this.onSubmit}>
-          Add recipe
-        </button>
-      </form>
+        <FormGroup>
+          <select
+            name="ingredientId"
+            value={this.state.currentIngredientId}
+            onChange={e => this.onChange('currentIngredientId', e)}
+          >
+            <option value="">Select an ingredient</option>
+            {ingredients.map(ingredient => (
+              <option key={ingredient.id} value={ingredient.id}>
+                {ingredient.name}
+              </option>
+            ))}
+          </select>
+        </FormGroup>
+        <FormGroup>
+          <input
+            name="quantity"
+            placeholder="Enter a quantity"
+            type="number"
+            value={this.state.currentQuantity}
+            onChange={e => this.onChange('currentQuantity', e)}
+          />
+        </FormGroup>
+        <Button onClick={this.addComponent}>Add component</Button>
+        <Button type="submit">Add recipe</Button>
+      </Form>
     );
   }
 }
@@ -137,12 +145,21 @@ class RecipesList extends React.Component {
 
     return (
       <div className="RecipesPage">
-        <Form
-          onSubmit={addRecipe}
-          nextId={recipes.length + 1}
-          ingredients={ingredients}
-        />
-        <List recipes={recipes} ingredients={ingredients} />
+        <Container>
+          <h1>Recipes</h1>
+          <Row>
+            <Col>
+              <List recipes={recipes} ingredients={ingredients} />
+            </Col>
+            <Col>
+              <RecipeForm
+                onSubmit={addRecipe}
+                nextId={recipes.length + 1}
+                ingredients={ingredients}
+              />
+            </Col>
+          </Row>
+        </Container>
       </div>
     );
   }

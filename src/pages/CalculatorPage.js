@@ -1,3 +1,5 @@
+import { Button, Col, Container, Form, FormGroup, Row } from 'reactstrap';
+
 import React from 'react';
 import { evaluateRecipePrice } from '../helpers/Calculator';
 
@@ -16,7 +18,7 @@ const Summary = ({ recipe, numberOfPersons, ingredients }) => {
   );
 };
 
-class Form extends React.Component {
+class CalculatorForm extends React.Component {
   state = {
     numberOfPersons: 0,
     recipeId: 0
@@ -41,27 +43,32 @@ class Form extends React.Component {
     const { recipes, ingredients } = this.props;
 
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
-          name="numberOfPersons"
-          placeholder="Enter a number of persons"
-          type="number"
-          value={this.state.numberOfPersons}
-          onChange={e => this.onChange('numberOfPersons', e)}
-        />
-        <select
-          name="recipeId"
-          value={this.state.recipeId}
-          onChange={e => this.onChange('recipeId', e)}
-        >
-          <option value="">Select a recipe</option>
-          {recipes.map(recipe => (
-            <option key={recipe.id} value={recipe.id}>
-              {recipe.name}
-            </option>
-          ))}
-        </select>
-      </form>
+      <Form onSubmit={this.onSubmit}>
+        <FormGroup>
+          <input
+            name="numberOfPersons"
+            placeholder="Enter a number of persons"
+            type="number"
+            value={this.state.numberOfPersons}
+            onChange={e => this.onChange('numberOfPersons', e)}
+          />
+        </FormGroup>
+        <FormGroup>
+          <select
+            name="recipeId"
+            value={this.state.recipeId}
+            onChange={e => this.onChange('recipeId', e)}
+          >
+            <option value="">Select a recipe</option>
+            {recipes.map(recipe => (
+              <option key={recipe.id} value={recipe.id}>
+                {recipe.name}
+              </option>
+            ))}
+          </select>
+        </FormGroup>
+        <Button>Submit</Button>
+      </Form>
     );
   }
 }
@@ -84,18 +91,27 @@ class CalculatorPage extends React.Component {
 
     return (
       <div className="CalculatorPage">
-        <Form
-          recipes={recipes}
-          ingredients={ingredients}
-          onSubmit={this.calculate}
-        />
-        {this.state.recipe && (
-          <Summary
-            ingredients={ingredients}
-            recipe={this.state.recipe}
-            numberOfPersons={this.state.numberOfPersons}
-          />
-        )}
+        <Container>
+          <h1>Calculator</h1>
+          <Row>
+            <Col md={8}>
+              {this.state.recipe && (
+                <Summary
+                  ingredients={ingredients}
+                  recipe={this.state.recipe}
+                  numberOfPersons={this.state.numberOfPersons}
+                />
+              )}
+            </Col>
+            <Col md={4}>
+              <CalculatorForm
+                recipes={recipes}
+                ingredients={ingredients}
+                onSubmit={this.calculate}
+              />
+            </Col>
+          </Row>
+        </Container>
       </div>
     );
   }

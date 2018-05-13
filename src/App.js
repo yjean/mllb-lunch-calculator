@@ -1,10 +1,11 @@
 import './App.css';
 
-import { Link, Route, BrowserRouter as Router } from 'react-router-dom';
 import React, { Component } from 'react';
+import { Route, BrowserRouter as Router } from 'react-router-dom';
 
 import CalculatorPage from './pages/CalculatorPage';
 import IngredientsPage from './pages/IngredientsPage';
+import MainNavigation from './MainNavigation';
 import RecipesPage from './pages/RecipesPage';
 import logo from './logo.svg';
 
@@ -50,18 +51,7 @@ class App extends Component {
       <div className="App">
         <Router>
           <React.Fragment>
-            <ul>
-              <li>
-                <Link to="/">Calculator</Link>
-              </li>
-              <li>
-                <Link to="/ingredients">Ingredients</Link>
-              </li>
-              <li>
-                <Link to="/recipes">Recipes</Link>
-              </li>
-            </ul>
-            <hr />
+            <MainNavigation />
             <Route
               exact
               path="/"

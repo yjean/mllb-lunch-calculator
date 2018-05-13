@@ -1,3 +1,5 @@
+import { Button, Col, Container, Form, FormGroup, Row } from 'reactstrap';
+
 import React from 'react';
 
 const Ingredient = ({ ingredient }) => (
@@ -20,7 +22,7 @@ const initialFormState = {
   unit: ''
 };
 
-class Form extends React.Component {
+class IngredientForm extends React.Component {
   state = initialFormState;
 
   onChange = (field, e) => this.setState({ [field]: e.target.value });
@@ -33,36 +35,40 @@ class Form extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
-          name="name"
-          placeholder="Enter a name"
-          type="text"
-          value={this.state.name}
-          onChange={e => this.onChange('name', e)}
-        />
-        <input
-          name="price"
-          placeholder="Enter a price"
-          type="text"
-          value={this.state.price}
-          onChange={e => this.onChange('price', e)}
-        />
-        <select
-          name="unit"
-          value={this.state.unit}
-          onChange={e => this.onChange('unit', e)}
-        >
-          <option value="">Select a unit</option>
-          <option value="gr">Gramme</option>
-          <option value="lbs">Pound</option>
-          <option value="ml">Milliliter</option>
-          <option value="oz">Ounce</option>
-        </select>
-        <button type="submit" onClick={this.onSubmit}>
-          Add
-        </button>
-      </form>
+      <Form onSubmit={this.onSubmit}>
+        <FormGroup>
+          <input
+            name="name"
+            placeholder="Enter a name"
+            type="text"
+            value={this.state.name}
+            onChange={e => this.onChange('name', e)}
+          />
+        </FormGroup>
+        <FormGroup>
+          <input
+            name="price"
+            placeholder="Enter a price"
+            type="text"
+            value={this.state.price}
+            onChange={e => this.onChange('price', e)}
+          />
+        </FormGroup>
+        <FormGroup>
+          <select
+            name="unit"
+            value={this.state.unit}
+            onChange={e => this.onChange('unit', e)}
+          >
+            <option value="">Select a unit</option>
+            <option value="gr">Gramme (gr)</option>
+            <option value="lbs">Pound (lbs)</option>
+            <option value="ml">Milliliter (ml)</option>
+            <option value="oz">Ounce (oz)</option>
+          </select>
+        </FormGroup>
+        <Button type="submit">Add</Button>
+      </Form>
     );
   }
 }
@@ -73,8 +79,20 @@ class IngredientsPage extends React.Component {
 
     return (
       <div className="IngredientsPage">
-        <Form onSubmit={addIngredient} nextId={ingredients.length + 1} />
-        <List ingredients={ingredients} />
+        <Container>
+          <h1>Ingredients</h1>
+          <Row>
+            <Col md={8}>
+              <List ingredients={ingredients} />
+            </Col>
+            <Col md={4}>
+              <IngredientForm
+                onSubmit={addIngredient}
+                nextId={ingredients.length + 1}
+              />
+            </Col>
+          </Row>
+        </Container>
       </div>
     );
   }

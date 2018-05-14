@@ -7,7 +7,6 @@ import CalculatorPage from './pages/CalculatorPage';
 import IngredientsPage from './pages/IngredientsPage';
 import MainNavigation from './MainNavigation';
 import RecipesPage from './pages/RecipesPage';
-import logo from './logo.svg';
 
 class App extends Component {
   state = {

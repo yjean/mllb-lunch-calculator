@@ -59,7 +59,7 @@ class CalculatorForm extends React.Component {
   };
 
   render() {
-    const { recipes, ingredients } = this.props;
+    const { recipes } = this.props;
 
     return (
       <Form onSubmit={this.onSubmit}>

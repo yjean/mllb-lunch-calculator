@@ -4,7 +4,6 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
-  CardText,
   CardTitle,
   Col,
   Container,

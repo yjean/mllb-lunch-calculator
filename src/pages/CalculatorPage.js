@@ -1,5 +1,8 @@
 import {
   Button,
+  Card,
+  CardBody,
+  CardHeader,
   Col,
   Container,
   Form,
@@ -122,11 +125,16 @@ class CalculatorPage extends React.Component {
               )}
             </Col>
             <Col md={4}>
-              <CalculatorForm
-                recipes={recipes}
-                ingredients={ingredients}
-                onSubmit={this.calculate}
-              />
+              <Card>
+                <CardHeader>Evaluate</CardHeader>
+                <CardBody>
+                  <CalculatorForm
+                    recipes={recipes}
+                    ingredients={ingredients}
+                    onSubmit={this.calculate}
+                  />
+                </CardBody>
+              </Card>
             </Col>
           </Row>
         </Container>

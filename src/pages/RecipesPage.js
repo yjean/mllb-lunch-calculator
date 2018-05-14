@@ -1,5 +1,11 @@
 import {
   Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  CardText,
+  CardTitle,
   Col,
   Container,
   Form,
@@ -11,29 +17,38 @@ import {
   Row
 } from 'reactstrap';
 
+import Amount from '../Amount';
 import React from 'react';
 import { evaluateRecipePrice } from '../helpers/Calculator';
 
 const Recipe = ({ recipe, ingredients }) => (
-  <li>
-    {recipe.name} for {recipe.numberOfPersons} person(s)
-    <ul>
-      {recipe.components.map((component, index) => (
-        <Component
-          key={index}
-          component={component}
-          ingredients={ingredients}
-        />
-      ))}
-    </ul>
-    ${evaluateRecipePrice(recipe, ingredients)}
-  </li>
+  <Card>
+    <CardBody>
+      <CardTitle>
+        {recipe.name} for {recipe.numberOfPersons} person(s)
+      </CardTitle>
+      <ul>
+        {recipe.components.map((component, index) => (
+          <Component
+            key={index}
+            component={component}
+            ingredients={ingredients}
+          />
+        ))}
+      </ul>
+    </CardBody>
+    <CardFooter>
+      <Amount amount={evaluateRecipePrice(recipe, ingredients)} />
+    </CardFooter>
+  </Card>
 );
 
 const List = ({ recipes, ingredients }) => (
-  <ul>
+  <ul className="list-unstyled">
     {recipes.map(recipe => (
-      <Recipe key={recipe.id} recipe={recipe} ingredients={ingredients} />
+      <li key={recipe.id}>
+        <Recipe key={recipe.id} recipe={recipe} ingredients={ingredients} />
+      </li>
     ))}
   </ul>
 );
@@ -94,6 +109,7 @@ class RecipeForm extends React.Component {
 
   render() {
     const { ingredients } = this.props;
+    const hasComponents = this.state.components.length > 0;
     const currentUnit = this.state.currentIngredientId
       ? ingredients.find(
           i => i.id === parseInt(this.state.currentIngredientId, 10)
@@ -122,15 +138,17 @@ class RecipeForm extends React.Component {
           />
         </FormGroup>
         <Label>Ingredients:</Label>
-        <ul>
-          {this.state.components.map((component, id) => (
-            <Component
-              key={id}
-              component={component}
-              ingredients={ingredients}
-            />
-          ))}
-        </ul>
+        {hasComponents && (
+          <ul>
+            {this.state.components.map((component, id) => (
+              <Component
+                key={id}
+                component={component}
+                ingredients={ingredients}
+              />
+            ))}
+          </ul>
+        )}
         <FormGroup>
           <Input
             type="select"
@@ -183,11 +201,16 @@ class RecipesList extends React.Component {
               <List recipes={recipes} ingredients={ingredients} />
             </Col>
             <Col md={4}>
-              <RecipeForm
-                onSubmit={addRecipe}
-                nextId={recipes.length + 1}
-                ingredients={ingredients}
-              />
+              <Card>
+                <CardHeader>Add a recipe</CardHeader>
+                <CardBody>
+                  <RecipeForm
+                    onSubmit={addRecipe}
+                    nextId={recipes.length + 1}
+                    ingredients={ingredients}
+                  />
+                </CardBody>
+              </Card>
             </Col>
           </Row>
         </Container>

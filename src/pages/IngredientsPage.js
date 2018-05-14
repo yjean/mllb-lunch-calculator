@@ -1,5 +1,8 @@
 import {
   Button,
+  Card,
+  CardBody,
+  CardHeader,
   Col,
   Container,
   Form,
@@ -95,10 +98,15 @@ class IngredientsPage extends React.Component {
               <List ingredients={ingredients} />
             </Col>
             <Col md={4}>
-              <IngredientForm
-                onSubmit={addIngredient}
-                nextId={ingredients.length + 1}
-              />
+              <Card>
+                <CardHeader>Add an ingredient</CardHeader>
+                <CardBody>
+                  <IngredientForm
+                    onSubmit={addIngredient}
+                    nextId={ingredients.length + 1}
+                  />
+                </CardBody>
+              </Card>
             </Col>
           </Row>
         </Container>

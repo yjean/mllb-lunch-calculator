@@ -1,4 +1,15 @@
-import { Button, Col, Container, Form, FormGroup, Row } from 'reactstrap';
+import {
+  Button,
+  Col,
+  Container,
+  Form,
+  FormGroup,
+  Input,
+  InputGroup,
+  InputGroupAddon,
+  Label,
+  Row
+} from 'reactstrap';
 
 import React from 'react';
 import { evaluateRecipePrice } from '../helpers/Calculator';
@@ -83,11 +94,16 @@ class RecipeForm extends React.Component {
 
   render() {
     const { ingredients } = this.props;
+    const currentUnit = this.state.currentIngredientId
+      ? ingredients.find(
+          i => i.id === parseInt(this.state.currentIngredientId, 10)
+        ).unit
+      : null;
 
     return (
       <Form onSubmit={this.onSubmit}>
         <FormGroup>
-          <input
+          <Input
             name="name"
             placeholder="Enter a name"
             type="text"
@@ -96,7 +112,8 @@ class RecipeForm extends React.Component {
           />
         </FormGroup>
         <FormGroup>
-          <input
+          <Label>Number of persons:</Label>
+          <Input
             name="numberOfPersons"
             placeholder="Enter a number of persons"
             type="number"
@@ -104,13 +121,19 @@ class RecipeForm extends React.Component {
             onChange={e => this.onChange('numberOfPersons', e)}
           />
         </FormGroup>
+        <Label>Ingredients:</Label>
         <ul>
           {this.state.components.map((component, id) => (
-            <Component component={component} ingredients={ingredients} />
+            <Component
+              key={id}
+              component={component}
+              ingredients={ingredients}
+            />
           ))}
         </ul>
         <FormGroup>
-          <select
+          <Input
+            type="select"
             name="ingredientId"
             value={this.state.currentIngredientId}
             onChange={e => this.onChange('currentIngredientId', e)}
@@ -121,18 +144,26 @@ class RecipeForm extends React.Component {
                 {ingredient.name}
               </option>
             ))}
-          </select>
+          </Input>
         </FormGroup>
         <FormGroup>
-          <input
-            name="quantity"
-            placeholder="Enter a quantity"
-            type="number"
-            value={this.state.currentQuantity}
-            onChange={e => this.onChange('currentQuantity', e)}
-          />
+          {currentUnit && (
+            <InputGroup>
+              <Input
+                name="quantity"
+                placeholder="Enter a quantity"
+                type="number"
+                value={this.state.currentQuantity}
+                onChange={e => this.onChange('currentQuantity', e)}
+              />
+              <InputGroupAddon addonType="append">
+                {currentUnit}
+              </InputGroupAddon>
+            </InputGroup>
+          )}
         </FormGroup>
-        <Button onClick={this.addComponent}>Add component</Button>
+        <Button onClick={this.addComponent}>Add ingredient</Button>
+        <hr />
         <Button type="submit">Add recipe</Button>
       </Form>
     );
@@ -148,10 +179,10 @@ class RecipesList extends React.Component {
         <Container>
           <h1>Recipes</h1>
           <Row>
-            <Col>
+            <Col md={8}>
               <List recipes={recipes} ingredients={ingredients} />
             </Col>
-            <Col>
+            <Col md={4}>
               <RecipeForm
                 onSubmit={addRecipe}
                 nextId={recipes.length + 1}

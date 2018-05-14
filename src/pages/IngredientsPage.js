@@ -1,4 +1,12 @@
-import { Button, Col, Container, Form, FormGroup, Row } from 'reactstrap';
+import {
+  Button,
+  Col,
+  Container,
+  Form,
+  FormGroup,
+  Input,
+  Row
+} from 'reactstrap';
 
 import React from 'react';
 
@@ -37,7 +45,7 @@ class IngredientForm extends React.Component {
     return (
       <Form onSubmit={this.onSubmit}>
         <FormGroup>
-          <input
+          <Input
             name="name"
             placeholder="Enter a name"
             type="text"
@@ -46,7 +54,7 @@ class IngredientForm extends React.Component {
           />
         </FormGroup>
         <FormGroup>
-          <input
+          <Input
             name="price"
             placeholder="Enter a price"
             type="text"
@@ -55,7 +63,8 @@ class IngredientForm extends React.Component {
           />
         </FormGroup>
         <FormGroup>
-          <select
+          <Input
+            type="select"
             name="unit"
             value={this.state.unit}
             onChange={e => this.onChange('unit', e)}
@@ -65,7 +74,7 @@ class IngredientForm extends React.Component {
             <option value="lbs">Pound (lbs)</option>
             <option value="ml">Milliliter (ml)</option>
             <option value="oz">Ounce (oz)</option>
-          </select>
+          </Input>
         </FormGroup>
         <Button type="submit">Add</Button>
       </Form>

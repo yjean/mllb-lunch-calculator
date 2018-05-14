@@ -1,4 +1,13 @@
-import { Button, Col, Container, Form, FormGroup, Row } from 'reactstrap';
+import {
+  Button,
+  Col,
+  Container,
+  Form,
+  FormGroup,
+  Input,
+  Label,
+  Row
+} from 'reactstrap';
 
 import React from 'react';
 import { evaluateRecipePrice } from '../helpers/Calculator';
@@ -45,7 +54,8 @@ class CalculatorForm extends React.Component {
     return (
       <Form onSubmit={this.onSubmit}>
         <FormGroup>
-          <input
+          <Label>Number of persons:</Label>
+          <Input
             name="numberOfPersons"
             placeholder="Enter a number of persons"
             type="number"
@@ -54,7 +64,8 @@ class CalculatorForm extends React.Component {
           />
         </FormGroup>
         <FormGroup>
-          <select
+          <Input
+            type="select"
             name="recipeId"
             value={this.state.recipeId}
             onChange={e => this.onChange('recipeId', e)}
@@ -65,7 +76,7 @@ class CalculatorForm extends React.Component {
                 {recipe.name}
               </option>
             ))}
-          </select>
+          </Input>
         </FormGroup>
         <Button>Submit</Button>
       </Form>

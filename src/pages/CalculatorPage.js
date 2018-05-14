@@ -9,6 +9,7 @@ import {
   Row
 } from 'reactstrap';
 
+import Amount from '../Amount';
 import React from 'react';
 import { evaluateRecipePrice } from '../helpers/Calculator';
 
@@ -19,9 +20,15 @@ const Summary = ({ recipe, numberOfPersons, ingredients }) => {
     <div className="Summary">
       <dl>
         <dt>Recipe price (for {recipe.numberOfPersons} persons)</dt>
-        <dd>${recipePrice}</dd>
+        <dd>
+          <Amount amount={recipePrice} />
+        </dd>
         <dt>For {numberOfPersons} persons</dt>
-        <dd>${recipePrice * numberOfPersons / recipe.numberOfPersons}</dd>
+        <dd>
+          <Amount
+            amount={recipePrice * numberOfPersons / recipe.numberOfPersons}
+          />
+        </dd>
       </dl>
     </div>
   );

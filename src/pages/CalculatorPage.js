@@ -13,6 +13,7 @@ import {
 } from 'reactstrap';
 
 import Amount from '../Amount';
+import ErrorBoundary from '../ErrorBoundary';
 import React from 'react';
 import { evaluateRecipePrice } from '../helpers/Calculator';
 
@@ -111,34 +112,36 @@ class CalculatorPage extends React.Component {
     const { recipes, ingredients } = this.props;
 
     return (
-      <div className="CalculatorPage">
-        <Container>
-          <h1>Calculator</h1>
-          <Row>
-            <Col md={8}>
-              {this.state.recipe && (
-                <Summary
-                  ingredients={ingredients}
-                  recipe={this.state.recipe}
-                  numberOfPersons={this.state.numberOfPersons}
-                />
-              )}
-            </Col>
-            <Col md={4}>
-              <Card>
-                <CardHeader>Evaluate</CardHeader>
-                <CardBody>
-                  <CalculatorForm
-                    recipes={recipes}
+      <ErrorBoundary>
+        <div className="CalculatorPage">
+          <Container>
+            <h1>Calculator</h1>
+            <Row>
+              <Col md={8}>
+                {this.state.recipe && (
+                  <Summary
                     ingredients={ingredients}
-                    onSubmit={this.calculate}
+                    recipe={this.state.recipe}
+                    numberOfPersons={this.state.numberOfPersons}
                   />
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      </div>
+                )}
+              </Col>
+              <Col md={4}>
+                <Card>
+                  <CardHeader>Evaluate</CardHeader>
+                  <CardBody>
+                    <CalculatorForm
+                      recipes={recipes}
+                      ingredients={ingredients}
+                      onSubmit={this.calculate}
+                    />
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+      </ErrorBoundary>
     );
   }
 }

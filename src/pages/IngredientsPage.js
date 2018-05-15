@@ -13,6 +13,7 @@ import {
   Row
 } from 'reactstrap';
 
+import ErrorBoundary from '../ErrorBoundary';
 import React from 'react';
 import sortBy from 'lodash/sortBy';
 
@@ -110,30 +111,32 @@ class IngredientsPage extends React.Component {
     const { ingredients, addIngredient, removeIngredient } = this.props;
 
     return (
-      <div className="IngredientsPage">
-        <Container>
-          <h1>Ingredients</h1>
-          <Row>
-            <Col md={8}>
-              <List
-                ingredients={sortBy(ingredients, 'name')}
-                removeIngredient={removeIngredient}
-              />
-            </Col>
-            <Col md={4}>
-              <Card>
-                <CardHeader>Add an ingredient</CardHeader>
-                <CardBody>
-                  <IngredientForm
-                    onSubmit={addIngredient}
-                    nextId={ingredients.length + 1}
-                  />
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      </div>
+      <ErrorBoundary>
+        <div className="IngredientsPage">
+          <Container>
+            <h1>Ingredients</h1>
+            <Row>
+              <Col md={8}>
+                <List
+                  ingredients={sortBy(ingredients, 'name')}
+                  removeIngredient={removeIngredient}
+                />
+              </Col>
+              <Col md={4}>
+                <Card>
+                  <CardHeader>Add an ingredient</CardHeader>
+                  <CardBody>
+                    <IngredientForm
+                      onSubmit={addIngredient}
+                      nextId={ingredients.length + 1}
+                    />
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+      </ErrorBoundary>
     );
   }
 }

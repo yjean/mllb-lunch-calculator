@@ -17,6 +17,7 @@ import {
 } from 'reactstrap';
 
 import Amount from '../Amount';
+import ErrorBoundary from '../ErrorBoundary';
 import React from 'react';
 import { evaluateRecipePrice } from '../helpers/Calculator';
 
@@ -192,28 +193,30 @@ class RecipesList extends React.Component {
     const { recipes, ingredients, addRecipe } = this.props;
 
     return (
-      <div className="RecipesPage">
-        <Container>
-          <h1>Recipes</h1>
-          <Row>
-            <Col md={8}>
-              <List recipes={recipes} ingredients={ingredients} />
-            </Col>
-            <Col md={4}>
-              <Card>
-                <CardHeader>Add a recipe</CardHeader>
-                <CardBody>
-                  <RecipeForm
-                    onSubmit={addRecipe}
-                    nextId={recipes.length + 1}
-                    ingredients={ingredients}
-                  />
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      </div>
+      <ErrorBoundary>
+        <div className="RecipesPage">
+          <Container>
+            <h1>Recipes</h1>
+            <Row>
+              <Col md={8}>
+                <List recipes={recipes} ingredients={ingredients} />
+              </Col>
+              <Col md={4}>
+                <Card>
+                  <CardHeader>Add a recipe</CardHeader>
+                  <CardBody>
+                    <RecipeForm
+                      onSubmit={addRecipe}
+                      nextId={recipes.length + 1}
+                      ingredients={ingredients}
+                    />
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+      </ErrorBoundary>
     );
   }
 }

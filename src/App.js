@@ -7,6 +7,7 @@ import CalculatorPage from './pages/CalculatorPage';
 import IngredientsPage from './pages/IngredientsPage';
 import MainNavigation from './MainNavigation';
 import RecipesPage from './pages/RecipesPage';
+import slice from 'lodash/slice';
 
 class App extends Component {
   constructor(props) {
@@ -21,19 +22,38 @@ class App extends Component {
     };
   }
 
+  persistState = () => {
+    window.localStorage.setItem(
+      'ingredients',
+      JSON.stringify(this.state.ingredients)
+    );
+    window.localStorage.setItem('recipes', JSON.stringify(this.state.recipes));
+  };
+
   addIngredient = ingredient => {
-    console.log(ingredient);
     this.setState(
       {
         ingredients: [...this.state.ingredients, ingredient]
       },
-      _ => {
-        window.localStorage.setItem(
-          'ingredients',
-          JSON.stringify(this.state.ingredients)
-        );
-      }
+      this.persistState
     );
+  };
+
+  removeIngredient = ingredient => {
+    const confirmed = window.confirm(`Confirm deletion of ${ingredient.name}?`);
+    if (confirmed) {
+      const index = this.state.ingredients.findIndex(
+        i => i.id === ingredient.id
+      );
+      if (index > -1) {
+        const ingredients = [
+          ...slice(this.state.ingredients, 0, index),
+          ...slice(this.state.ingredients, index + 1)
+        ];
+
+        this.setState({ ingredients }, this.persistState);
+      }
+    }
   };
 
   addRecipe = recipe =>
@@ -41,12 +61,7 @@ class App extends Component {
       {
         recipes: [...this.state.recipes, recipe]
       },
-      _ => {
-        window.localStorage.setItem(
-          'recipes',
-          JSON.stringify(this.state.recipes)
-        );
-      }
+      this.persistState
     );
 
   render() {
@@ -71,6 +86,7 @@ class App extends Component {
                 <IngredientsPage
                   ingredients={this.state.ingredients}
                   addIngredient={this.addIngredient}
+                  removeIngredient={this.removeIngredient}
                 />
               )}
             />

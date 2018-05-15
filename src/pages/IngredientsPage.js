@@ -8,24 +8,39 @@ import {
   Form,
   FormGroup,
   Input,
+  ListGroup,
+  ListGroupItem,
   Row
 } from 'reactstrap';
 
 import React from 'react';
 import sortBy from 'lodash/sortBy';
 
-const Ingredient = ({ ingredient }) => (
-  <li>
-    {ingredient.name} ${ingredient.price}/{ingredient.unit}
-  </li>
+const Ingredient = ({ ingredient, removeIngredient }) => (
+  <ListGroupItem>
+    <div className="float-right">
+      <Button
+        size="sm"
+        color="danger"
+        onClick={() => removeIngredient(ingredient)}
+      >
+        delete
+      </Button>
+    </div>
+    {ingredient.name} ${ingredient.price}/{ingredient.unit}{' '}
+  </ListGroupItem>
 );
 
-const List = ({ ingredients }) => (
-  <ul>
+const List = ({ ingredients, removeIngredient }) => (
+  <ListGroup>
     {ingredients.map(ingredient => (
-      <Ingredient key={ingredient.id} ingredient={ingredient} />
+      <Ingredient
+        key={ingredient.id}
+        ingredient={ingredient}
+        removeIngredient={removeIngredient}
+      />
     ))}
-  </ul>
+  </ListGroup>
 );
 
 const initialFormState = {
@@ -92,7 +107,7 @@ class IngredientForm extends React.Component {
 
 class IngredientsPage extends React.Component {
   render() {
-    const { ingredients, addIngredient } = this.props;
+    const { ingredients, addIngredient, removeIngredient } = this.props;
 
     return (
       <div className="IngredientsPage">
@@ -100,7 +115,10 @@ class IngredientsPage extends React.Component {
           <h1>Ingredients</h1>
           <Row>
             <Col md={8}>
-              <List ingredients={sortBy(ingredients, 'name')} />
+              <List
+                ingredients={sortBy(ingredients, 'name')}
+                removeIngredient={removeIngredient}
+              />
             </Col>
             <Col md={4}>
               <Card>

@@ -34,7 +34,8 @@ const GRAM_RATIOS = {
   l: 0.00096,
   oz: 0.035,
   tsp: 0.203,
-  tbsp: 0.0676
+  tbsp: 0.0676,
+  unit: 1
 };
 
 function scaledQuantity(quantity, fromUnit, toUnit) {

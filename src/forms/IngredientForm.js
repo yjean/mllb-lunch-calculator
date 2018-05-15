@@ -3,14 +3,14 @@ import { Button, Form, FormGroup, Input } from 'reactstrap';
 import React from 'react';
 
 export const UNITS = {
-  gr: 'Gramme(gr)',
+  gr: 'Gram (gr)',
   lbs: 'Pound (lbs)',
   ml: 'Milliliter (ml)',
   l: 'Liter (L)',
   oz: 'Ounce (oz)',
-  unit: 'Unit',
-  tsp: 'Teaspoon',
-  tbsp: 'Tablespoon'
+  unit: 'Unit (u)',
+  tsp: 'Teaspoon (tsp)',
+  tbsp: 'Tablespoon (tbsp)'
 };
 
 const initialFormState = {

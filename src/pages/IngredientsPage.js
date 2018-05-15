@@ -12,6 +12,7 @@ import {
 } from 'reactstrap';
 
 import React from 'react';
+import sortBy from 'lodash/sortBy';
 
 const Ingredient = ({ ingredient }) => (
   <li>
@@ -98,7 +99,7 @@ class IngredientsPage extends React.Component {
           <h1>Ingredients</h1>
           <Row>
             <Col md={8}>
-              <List ingredients={ingredients} />
+              <List ingredients={sortBy(ingredients, 'name')} />
             </Col>
             <Col md={4}>
               <Card>

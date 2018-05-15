@@ -15,6 +15,8 @@ import {
 
 import ErrorBoundary from '../ErrorBoundary';
 import React from 'react';
+import map from 'lodash/map';
+import max from 'lodash/max';
 import sortBy from 'lodash/sortBy';
 
 const Ingredient = ({ ingredient, removeIngredient }) => (
@@ -128,7 +130,7 @@ class IngredientsPage extends React.Component {
                   <CardBody>
                     <IngredientForm
                       onSubmit={addIngredient}
-                      nextId={ingredients.length + 1}
+                      nextId={(max(map(ingredients, 'id')) || 0) + 1}
                     />
                   </CardBody>
                 </Card>

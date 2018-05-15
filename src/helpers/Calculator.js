@@ -39,9 +39,6 @@ const GRAM_RATIOS = {
 
 function scaledQuantity(quantity, fromUnit, toUnit) {
   const ratio = GRAM_RATIOS[fromUnit] || 1;
-  if (ratio === 1) {
-    return quantity;
-  }
   const inGram = quantity * 1 / ratio;
 
   return inGram * GRAM_RATIOS[toUnit];

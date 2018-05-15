@@ -13,7 +13,7 @@ const Ingredient = ({ ingredient, removeIngredient }) => (
         delete
       </Button>
     </div>
-    {ingredient.name} ${ingredient.price}/{ingredient.unit}{' '}
+    [{ingredient.id}] {ingredient.name} ${ingredient.price}/{ingredient.unit}
   </ListGroupItem>
 );
 

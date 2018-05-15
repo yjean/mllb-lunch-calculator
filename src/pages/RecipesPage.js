@@ -19,6 +19,7 @@ import {
 import Amount from '../Amount';
 import ErrorBoundary from '../ErrorBoundary';
 import React from 'react';
+import { UNITS } from '../forms/IngredientForm';
 import { evaluateRecipePrice } from '../helpers/Calculator';
 import sortBy from 'lodash/sortBy';
 
@@ -60,7 +61,8 @@ const Component = ({ component, ingredients }) => {
 
   return (
     <li>
-      {ingredient.name} {component.quantity} {ingredient.unit}
+      {ingredient.name} {component.quantity} {component.unit} (price given for{' '}
+      {ingredient.unit})
     </li>
   );
 };
@@ -70,7 +72,8 @@ const initialFormState = {
   numberOfPersons: 0,
   components: [],
   currentIngredientId: '',
-  currentQuantity: 0
+  currentQuantity: 0,
+  currentUnit: ''
 };
 
 class RecipeForm extends React.Component {
@@ -99,7 +102,8 @@ class RecipeForm extends React.Component {
 
     const component = {
       ingredientId: this.state.currentIngredientId,
-      quantity: this.state.currentQuantity
+      quantity: this.state.currentQuantity,
+      unit: this.state.currentUnit
     };
     this.setState({
       components: [...this.state.components, component],
@@ -110,12 +114,12 @@ class RecipeForm extends React.Component {
 
   render() {
     const { ingredients } = this.props;
+    const currentIngredientId = parseInt(this.state.currentIngredientId, 10);
     const hasComponents = this.state.components.length > 0;
-    const currentUnit = this.state.currentIngredientId
-      ? ingredients.find(
-          i => i.id === parseInt(this.state.currentIngredientId, 10)
-        ).unit
-      : null;
+    const curretIngredient =
+      currentIngredientId > 0
+        ? ingredients.find(i => i.id === currentIngredientId)
+        : null;
 
     return (
       <Form onSubmit={this.onSubmit}>
@@ -166,7 +170,7 @@ class RecipeForm extends React.Component {
           </Input>
         </FormGroup>
         <FormGroup>
-          {currentUnit && (
+          {curretIngredient && (
             <InputGroup>
               <Input
                 name="quantity"
@@ -176,7 +180,18 @@ class RecipeForm extends React.Component {
                 onChange={e => this.onChange('currentQuantity', e)}
               />
               <InputGroupAddon addonType="append">
-                {currentUnit}
+                <Input
+                  type="select"
+                  name="ingredientId"
+                  value={this.state.currentUnit || curretIngredient.unit}
+                  onChange={e => this.onChange('currentUnit', e)}
+                >
+                  {Object.keys(UNITS).map(value => (
+                    <option key={value} value={value}>
+                      {UNITS[value]}
+                    </option>
+                  ))}
+                </Input>
               </InputGroupAddon>
             </InputGroup>
           )}

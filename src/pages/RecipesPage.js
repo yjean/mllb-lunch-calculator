@@ -61,8 +61,7 @@ const Component = ({ component, ingredients }) => {
 
   return (
     <li>
-      {ingredient.name} {component.quantity} {component.unit} (price given for{' '}
-      {ingredient.unit})
+      {ingredient.name} {component.quantity} {component.unit || ingredient.unit}
     </li>
   );
 };

@@ -20,6 +20,7 @@ import Amount from '../Amount';
 import ErrorBoundary from '../ErrorBoundary';
 import React from 'react';
 import { evaluateRecipePrice } from '../helpers/Calculator';
+import sortBy from 'lodash/sortBy';
 
 const Recipe = ({ recipe, ingredients }) => (
   <Card>
@@ -157,7 +158,7 @@ class RecipeForm extends React.Component {
             onChange={e => this.onChange('currentIngredientId', e)}
           >
             <option value="">Select an ingredient</option>
-            {ingredients.map(ingredient => (
+            {sortBy(ingredients, 'name').map(ingredient => (
               <option key={ingredient.id} value={ingredient.id}>
                 {ingredient.name}
               </option>

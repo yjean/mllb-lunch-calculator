@@ -77,6 +77,9 @@ class IngredientForm extends React.Component {
             <option value="lbs">Pound (lbs)</option>
             <option value="ml">Milliliter (ml)</option>
             <option value="oz">Ounce (oz)</option>
+            <option value="unit">Unit</option>
+            <option value="tsp">Teaspoon</option>
+            <option value="tbsp">Tablespoon</option>
           </Input>
         </FormGroup>
         <Button type="submit">Add</Button>

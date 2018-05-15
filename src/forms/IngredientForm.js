@@ -2,6 +2,17 @@ import { Button, Form, FormGroup, Input } from 'reactstrap';
 
 import React from 'react';
 
+export const UNITS = {
+  gr: 'Gramme(gr)',
+  lbs: 'Pound (lbs)',
+  ml: 'Milliliter (ml)',
+  l: 'Liter (L)',
+  oz: 'Ounce (oz)',
+  unit: 'Unit',
+  tsp: 'Teaspoon',
+  tbsp: 'Tablespoon'
+};
+
 const initialFormState = {
   name: '',
   price: '',
@@ -48,14 +59,9 @@ class IngredientForm extends React.Component {
             onChange={e => this.onChange('unit', e)}
           >
             <option value="">Select a unit</option>
-            <option value="gr">Gramme (gr)</option>
-            <option value="lbs">Pound (lbs)</option>
-            <option value="ml">Milliliter (ml)</option>
-            <option value="l">Liter (L)</option>
-            <option value="oz">Ounce (oz)</option>
-            <option value="unit">Unit</option>
-            <option value="tsp">Teaspoon</option>
-            <option value="tbsp">Tablespoon</option>
+            {Object.keys(UNITS).map(value => (
+              <option value={value}>{UNITS[value]}</option>
+            ))}
           </Input>
         </FormGroup>
         <Button type="submit">Add</Button>

@@ -60,6 +60,7 @@ class Recipe extends React.Component {
           <Label>Notes:</Label>
           <Input
             type="textarea"
+            rows="15"
             value={this.state.notes}
             onChange={this.notesChanged}
           />

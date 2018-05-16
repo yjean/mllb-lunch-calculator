@@ -3,7 +3,11 @@ export function evaluateIngredientPrice(
   quantity,
   unit = ingredient.unit
 ) {
-  return scaledQuantity(quantity, unit, ingredient.unit) * ingredient.price;
+  if (ingredient) {
+    return scaledQuantity(quantity, unit, ingredient.unit) * ingredient.price;
+  }
+
+  return 0;
 }
 
 export function evaluateRecipePrice(recipe, ingredients) {

@@ -1,6 +1,7 @@
 import '../Recipe.css';
 
 import {
+  Alert,
   Button,
   Card,
   CardBody,
@@ -104,11 +105,21 @@ const Component = ({ component, ingredients }) => {
   const id = parseInt(component.ingredientId, 10);
   const ingredient = ingredients.find(i => i.id === id);
 
-  return (
-    <li>
-      {ingredient.name} {component.quantity} {component.unit || ingredient.unit}
-    </li>
-  );
+  if (ingredient) {
+    return (
+      <li>
+        {ingredient.name} {component.quantity}{' '}
+        {component.unit || ingredient.unit}
+      </li>
+    );
+  } else {
+    return (
+      <Alert color="danger">
+        Ingredient with id <code>{component.ingredientId}</code> has been
+        removed.
+      </Alert>
+    );
+  }
 };
 
 const initialFormState = {

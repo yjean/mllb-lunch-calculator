@@ -11,7 +11,7 @@ class MainNavigation extends React.Component {
         <Nav>
           <NavItem>
             <NavLink tag={Link} to="/">
-              Calculator
+              Groceries
             </NavLink>
           </NavItem>
           <NavItem>

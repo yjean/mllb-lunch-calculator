@@ -115,7 +115,7 @@ class CalculatorPage extends React.Component {
       <ErrorBoundary>
         <div className="CalculatorPage">
           <Container>
-            <h1>Calculator</h1>
+            <h1>Groceries calculator</h1>
             <Row>
               <Col md={8}>
                 {this.state.recipe && (

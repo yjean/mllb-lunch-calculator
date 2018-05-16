@@ -1,3 +1,5 @@
+import '../Recipe.css';
+
 import {
   Button,
   Card,
@@ -23,33 +25,75 @@ import { UNITS } from '../forms/IngredientForm';
 import { evaluateRecipePrice } from '../helpers/Calculator';
 import sortBy from 'lodash/sortBy';
 
-const Recipe = ({ recipe, ingredients }) => (
-  <Card>
-    <CardBody>
-      <CardTitle>
-        {recipe.name} for {recipe.numberOfPersons} person(s)
-      </CardTitle>
-      <ul>
-        {recipe.components.map((component, index) => (
-          <Component
-            key={index}
-            component={component}
-            ingredients={ingredients}
-          />
-        ))}
-      </ul>
-    </CardBody>
-    <CardFooter>
-      <Amount amount={evaluateRecipePrice(recipe, ingredients)} />
-    </CardFooter>
-  </Card>
-);
+class Recipe extends React.Component {
+  constructor(props) {
+    super(props);
 
-const List = ({ recipes, ingredients }) => (
+    this.state = {
+      ...props.recipe
+    };
+  }
+
+  notesChanged = event => {
+    this.setState({ notes: event.target.value });
+  };
+
+  render() {
+    const { recipe, ingredients, updateRecipe, removeRecipe } = this.props;
+
+    return (
+      <Card className="Recipe">
+        <CardBody>
+          <CardTitle>
+            {recipe.name} for {recipe.numberOfPersons} person(s)
+          </CardTitle>
+          <Label>Ingredients:</Label>
+          <ul>
+            {recipe.components.map((component, index) => (
+              <Component
+                key={index}
+                component={component}
+                ingredients={ingredients}
+              />
+            ))}
+          </ul>
+          <Label>Notes:</Label>
+          <Input
+            type="textarea"
+            value={this.state.notes}
+            onChange={this.notesChanged}
+          />
+        </CardBody>
+        <CardFooter>
+          <Row>
+            <Col>
+              Price:{' '}
+              <Amount amount={evaluateRecipePrice(recipe, ingredients)} />
+            </Col>
+            <Col className="text-right">
+              <Button onClick={() => updateRecipe(this.state)}>Save</Button>{' '}
+              <Button color="danger" onClick={() => removeRecipe(recipe)}>
+                Delete
+              </Button>
+            </Col>
+          </Row>
+        </CardFooter>
+      </Card>
+    );
+  }
+}
+
+const List = ({ recipes, ingredients, updateRecipe, removeRecipe }) => (
   <ul className="list-unstyled">
     {recipes.map(recipe => (
       <li key={recipe.id}>
-        <Recipe key={recipe.id} recipe={recipe} ingredients={ingredients} />
+        <Recipe
+          key={recipe.id}
+          recipe={recipe}
+          ingredients={ingredients}
+          updateRecipe={updateRecipe}
+          removeRecipe={removeRecipe}
+        />
       </li>
     ))}
   </ul>
@@ -107,6 +151,7 @@ class RecipeForm extends React.Component {
     this.setState({
       components: [...this.state.components, component],
       currentIngredientId: '',
+      currentUnit: '',
       currentQuantity: 0
     });
   };
@@ -205,7 +250,13 @@ class RecipeForm extends React.Component {
 
 class RecipesList extends React.Component {
   render() {
-    const { recipes, ingredients, addRecipe } = this.props;
+    const {
+      recipes,
+      ingredients,
+      addRecipe,
+      updateRecipe,
+      removeRecipe
+    } = this.props;
 
     return (
       <ErrorBoundary>
@@ -214,7 +265,12 @@ class RecipesList extends React.Component {
             <h1>Recipes</h1>
             <Row>
               <Col md={8}>
-                <List recipes={recipes} ingredients={ingredients} />
+                <List
+                  recipes={recipes}
+                  ingredients={ingredients}
+                  updateRecipe={updateRecipe}
+                  removeRecipe={removeRecipe}
+                />
               </Col>
               <Col md={4}>
                 <Card>

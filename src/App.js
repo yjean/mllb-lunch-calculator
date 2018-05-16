@@ -39,21 +39,23 @@ class App extends Component {
     );
   };
 
-  removeIngredient = ingredient => {
-    const confirmed = window.confirm(`Confirm deletion of ${ingredient.name}?`);
+  remove = (element, collection) => {
+    const confirmed = window.confirm(`Confirm deletion of ${element.name}?`);
     if (confirmed) {
-      const index = this.state.ingredients.findIndex(
-        i => i.id === ingredient.id
-      );
+      const index = this.state[collection].findIndex(i => i.id === element.id);
       if (index > -1) {
-        const ingredients = [
-          ...slice(this.state.ingredients, 0, index),
-          ...slice(this.state.ingredients, index + 1)
+        const elements = [
+          ...slice(this.state[collection], 0, index),
+          ...slice(this.state[collection], index + 1)
         ];
 
-        this.setState({ ingredients }, this.persistState);
+        this.setState({ [collection]: elements }, this.persistState);
       }
     }
+  };
+
+  removeIngredient = ingredient => {
+    this.remove(ingredient, 'ingredients');
   };
 
   addRecipe = recipe =>
@@ -63,6 +65,24 @@ class App extends Component {
       },
       this.persistState
     );
+
+  updateRecipe = recipe => {
+    const recipeIndex = this.state.recipes.findIndex(r => r.id === recipe.id);
+    if (recipeIndex > -1) {
+      console.log(recipe);
+      const recipes = [
+        ...slice(this.state.recipes, 0, recipeIndex),
+        recipe,
+        ...slice(this.state.recipes, recipeIndex + 1)
+      ];
+
+      this.setState({ recipes }, this.persistState);
+    }
+  };
+
+  removeRecipe = recipe => {
+    this.remove(recipe, 'recipes');
+  };
 
   render() {
     return (
@@ -97,6 +117,8 @@ class App extends Component {
                   recipes={this.state.recipes}
                   ingredients={this.state.ingredients}
                   addRecipe={this.addRecipe}
+                  updateRecipe={this.updateRecipe}
+                  removeRecipe={this.removeRecipe}
                 />
               )}
             />

@@ -3,8 +3,15 @@ export function evaluateIngredientPrice(
   quantity,
   unit = ingredient.unit
 ) {
+  if (unit === '') {
+    unit = ingredient.unit;
+  }
   if (ingredient) {
     const price = parseFloat(ingredient.price.replace(',', '.'), 10);
+    // if we don't have a valid price, let's deal with a NaN
+    if (isNaN(price)) {
+      return 0;
+    }
     return scaledQuantity(quantity, unit, ingredient.unit) * price;
   }
 

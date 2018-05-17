@@ -40,12 +40,12 @@ export function evaluateRecipePrice(recipe, ingredients) {
 }
 
 const GRAM_RATIOS = {
-  lbs: 0.0022,
+  lbs: 0.002209496,
   ml: 0.96,
   l: 0.00096,
-  oz: 0.035,
-  tsp: 0.203,
-  tbsp: 0.0676
+  oz: 0.03527396194958,
+  tsp: 0.20288413535352,
+  tbsp: 0.067628045117839
 };
 
 function scaledQuantity(quantity, fromUnit, toUnit) {

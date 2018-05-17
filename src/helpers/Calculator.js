@@ -4,7 +4,8 @@ export function evaluateIngredientPrice(
   unit = ingredient.unit
 ) {
   if (ingredient) {
-    return scaledQuantity(quantity, unit, ingredient.unit) * ingredient.price;
+    const price = parseFloat(ingredient.price.replace(',', '.'), 10);
+    return scaledQuantity(quantity, unit, ingredient.unit) * price;
   }
 
   return 0;

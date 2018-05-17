@@ -60,7 +60,9 @@ class IngredientForm extends React.Component {
           >
             <option value="">Select a unit</option>
             {Object.keys(UNITS).map(value => (
-              <option value={value}>{UNITS[value]}</option>
+              <option key={value} value={value}>
+                {UNITS[value]}
+              </option>
             ))}
           </Input>
         </FormGroup>

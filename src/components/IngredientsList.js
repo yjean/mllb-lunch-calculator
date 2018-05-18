@@ -2,13 +2,20 @@ import { Button, ListGroup, ListGroupItem } from 'reactstrap';
 
 import React from 'react';
 
-const Ingredient = ({ ingredient, removeIngredient }) => {
+const Ingredient = ({ ingredient, removeIngredient, editIngredient }) => {
   const hasPrice = ingredient.price > 0;
   const hasUnit = ingredient.unit !== '';
 
   return (
     <ListGroupItem>
       <div className="float-right">
+        <Button
+          size="sm"
+          color="primary"
+          onClick={() => editIngredient(ingredient)}
+        >
+          edit
+        </Button>
         <Button
           size="sm"
           color="danger"
@@ -27,12 +34,13 @@ const Ingredient = ({ ingredient, removeIngredient }) => {
   );
 };
 
-const IngredientsList = ({ ingredients, removeIngredient }) => (
+const IngredientsList = ({ ingredients, removeIngredient, editIngredient }) => (
   <ListGroup>
     {ingredients.map(ingredient => (
       <Ingredient
         key={ingredient.id}
         ingredient={ingredient}
+        editIngredient={editIngredient}
         removeIngredient={removeIngredient}
       />
     ))}

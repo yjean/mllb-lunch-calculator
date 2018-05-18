@@ -14,6 +14,7 @@ export const UNITS = {
 };
 
 const initialFormState = {
+  id: 0,
   name: '',
   price: '',
   unit: ''
@@ -22,11 +23,18 @@ const initialFormState = {
 class IngredientForm extends React.Component {
   state = initialFormState;
 
+  componentWillReceiveProps(props) {
+    if (props.ingredient) {
+      this.setState({ ...props.ingredient });
+    }
+  }
+
   onChange = (field, e) => this.setState({ [field]: e.target.value });
 
   onSubmit = e => {
     e.preventDefault();
-    this.props.onSubmit({ ...this.state, id: this.props.nextId });
+    const id = this.state.id || this.props.nextId;
+    this.props.onSubmit({ ...this.state, id });
     this.setState(initialFormState);
   };
 
@@ -66,7 +74,7 @@ class IngredientForm extends React.Component {
             ))}
           </Input>
         </FormGroup>
-        <Button type="submit">Add</Button>
+        <Button type="submit">Save</Button>
       </Form>
     );
   }

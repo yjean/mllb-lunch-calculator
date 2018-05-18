@@ -30,15 +30,6 @@ class App extends Component {
     window.localStorage.setItem('recipes', JSON.stringify(this.state.recipes));
   };
 
-  addIngredient = ingredient => {
-    this.setState(
-      {
-        ingredients: [...this.state.ingredients, ingredient]
-      },
-      this.persistState
-    );
-  };
-
   remove = (element, collection) => {
     const confirmed = window.confirm(`Confirm deletion of ${element.name}?`);
     if (confirmed) {
@@ -54,6 +45,34 @@ class App extends Component {
     }
   };
 
+  update = (element, collection) => {
+    const elementIndex = this.state[collection].findIndex(
+      r => r.id === element.id
+    );
+    if (elementIndex > -1) {
+      const elements = [
+        ...slice(this.state[collection], 0, elementIndex),
+        element,
+        ...slice(this.state[collection], elementIndex + 1)
+      ];
+
+      this.setState({ [collection]: elements }, this.persistState);
+    }
+  };
+
+  addIngredient = ingredient => {
+    this.setState(
+      {
+        ingredients: [...this.state.ingredients, ingredient]
+      },
+      this.persistState
+    );
+  };
+
+  updateIngredient = ingredient => {
+    this.update(ingredient, 'ingredients');
+  };
+
   removeIngredient = ingredient => {
     this.remove(ingredient, 'ingredients');
   };
@@ -67,17 +86,7 @@ class App extends Component {
     );
 
   updateRecipe = recipe => {
-    const recipeIndex = this.state.recipes.findIndex(r => r.id === recipe.id);
-    if (recipeIndex > -1) {
-      console.log(recipe);
-      const recipes = [
-        ...slice(this.state.recipes, 0, recipeIndex),
-        recipe,
-        ...slice(this.state.recipes, recipeIndex + 1)
-      ];
-
-      this.setState({ recipes }, this.persistState);
-    }
+    this.update(recipe, 'recipes');
   };
 
   removeRecipe = recipe => {
@@ -106,6 +115,7 @@ class App extends Component {
                 <IngredientsPage
                   ingredients={this.state.ingredients}
                   addIngredient={this.addIngredient}
+                  updateIngredient={this.updateIngredient}
                   removeIngredient={this.removeIngredient}
                 />
               )}

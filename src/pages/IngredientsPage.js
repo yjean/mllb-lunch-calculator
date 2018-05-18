@@ -9,8 +9,23 @@ import max from 'lodash/max';
 import sortBy from 'lodash/sortBy';
 
 class IngredientsPage extends React.Component {
+  state = {
+    selectedIngredient: null
+  };
+
+  editIngredient = ingredient => {
+    this.setState({ selectedIngredient: ingredient });
+  };
+
   render() {
-    const { ingredients, addIngredient, removeIngredient } = this.props;
+    const {
+      ingredients,
+      addIngredient,
+      updateIngredient,
+      removeIngredient
+    } = this.props;
+    const { selectedIngredient } = this.state;
+    const header = selectedIngredient ? 'Edit ingredient' : 'Add an ingredient';
 
     return (
       <ErrorBoundary>
@@ -21,15 +36,19 @@ class IngredientsPage extends React.Component {
               <Col md={8}>
                 <IngredientsList
                   ingredients={sortBy(ingredients, 'name')}
+                  editIngredient={this.editIngredient}
                   removeIngredient={removeIngredient}
                 />
               </Col>
               <Col md={4}>
                 <Card>
-                  <CardHeader>Add an ingredient</CardHeader>
+                  <CardHeader>{header}</CardHeader>
                   <CardBody>
                     <IngredientForm
-                      onSubmit={addIngredient}
+                      onSubmit={
+                        selectedIngredient ? updateIngredient : addIngredient
+                      }
+                      ingredient={selectedIngredient}
                       nextId={(max(map(ingredients, 'id')) || 0) + 1}
                     />
                   </CardBody>

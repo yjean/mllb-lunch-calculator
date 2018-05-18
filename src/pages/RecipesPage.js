@@ -22,9 +22,9 @@ import {
 import Amount from '../Amount';
 import ErrorBoundary from '../ErrorBoundary';
 import React from 'react';
-import { UNITS } from '../forms/IngredientForm';
+import RecipeComponent from '../components/RecipeComponent';
+import RecipeForm from '../forms/RecipeForm';
 import { evaluateRecipePrice } from '../helpers/Calculator';
-import sortBy from 'lodash/sortBy';
 
 class Recipe extends React.Component {
   constructor(props) {
@@ -40,18 +40,30 @@ class Recipe extends React.Component {
   };
 
   render() {
-    const { recipe, ingredients, updateRecipe, removeRecipe } = this.props;
+    const {
+      recipe,
+      ingredients,
+      updateRecipe,
+      removeRecipe,
+      editRecipe
+    } = this.props;
 
     return (
       <Card className="Recipe">
+        <CardHeader>
+          <div className="float-right">
+            <Button color="primary" onClick={() => editRecipe(recipe)}>
+              edit
+            </Button>
+          </div>
+          {recipe.name}
+        </CardHeader>
         <CardBody>
-          <CardTitle>
-            {recipe.name} for {recipe.numberOfPersons} person(s)
-          </CardTitle>
+          <CardTitle>For {recipe.numberOfPersons} person(s)</CardTitle>
           <Label>Ingredients:</Label>
           <ul>
             {recipe.components.map((component, index) => (
-              <Component
+              <RecipeComponent
                 key={index}
                 component={component}
                 ingredients={ingredients}
@@ -85,7 +97,13 @@ class Recipe extends React.Component {
   }
 }
 
-const List = ({ recipes, ingredients, updateRecipe, removeRecipe }) => (
+const List = ({
+  recipes,
+  ingredients,
+  updateRecipe,
+  editRecipe,
+  removeRecipe
+}) => (
   <ul className="list-unstyled">
     {recipes.map(recipe => (
       <li key={recipe.id}>
@@ -94,6 +112,7 @@ const List = ({ recipes, ingredients, updateRecipe, removeRecipe }) => (
           recipe={recipe}
           ingredients={ingredients}
           updateRecipe={updateRecipe}
+          editRecipe={editRecipe}
           removeRecipe={removeRecipe}
         />
       </li>
@@ -101,166 +120,13 @@ const List = ({ recipes, ingredients, updateRecipe, removeRecipe }) => (
   </ul>
 );
 
-const Component = ({ component, ingredients }) => {
-  const id = parseInt(component.ingredientId, 10);
-  const ingredient = ingredients.find(i => i.id === id);
-
-  if (ingredient) {
-    return (
-      <li>
-        {ingredient.name} {component.quantity}{' '}
-        {component.unit || ingredient.unit}
-      </li>
-    );
-  } else {
-    return (
-      <Alert color="danger">
-        Ingredient with id <code>{component.ingredientId}</code> has been
-        removed.
-      </Alert>
-    );
-  }
-};
-
-const initialFormState = {
-  name: '',
-  numberOfPersons: 0,
-  components: [],
-  currentIngredientId: '',
-  currentQuantity: 0,
-  currentUnit: ''
-};
-
-class RecipeForm extends React.Component {
-  state = initialFormState;
-
-  onChange = (field, e) => {
-    this.setState({ [field]: e.target.value });
-  };
-
-  onSelectChange = (field, e) => {
-    const selection = Array.prototype.map.call(
-      e.target.selectedOptions,
-      opt => opt.value
-    );
-    this.setState({ [field]: selection });
-  };
-
-  onSubmit = e => {
-    e.preventDefault();
-    this.props.onSubmit({ ...this.state, id: this.props.nextId });
-    this.setState(initialFormState);
-  };
-
-  addComponent = e => {
-    e.preventDefault();
-
-    const component = {
-      ingredientId: this.state.currentIngredientId,
-      quantity: this.state.currentQuantity,
-      unit: this.state.currentUnit
-    };
-    this.setState({
-      components: [...this.state.components, component],
-      currentIngredientId: '',
-      currentUnit: '',
-      currentQuantity: 0
-    });
-  };
-
-  render() {
-    const { ingredients } = this.props;
-    const currentIngredientId = parseInt(this.state.currentIngredientId, 10);
-    const hasComponents = this.state.components.length > 0;
-    const curretIngredient =
-      currentIngredientId > 0
-        ? ingredients.find(i => i.id === currentIngredientId)
-        : null;
-
-    return (
-      <Form onSubmit={this.onSubmit}>
-        <FormGroup>
-          <Input
-            name="name"
-            placeholder="Enter a name"
-            type="text"
-            value={this.state.name}
-            onChange={e => this.onChange('name', e)}
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label>Number of persons:</Label>
-          <Input
-            name="numberOfPersons"
-            placeholder="Enter a number of persons"
-            type="number"
-            value={this.state.numberOfPersons}
-            onChange={e => this.onChange('numberOfPersons', e)}
-          />
-        </FormGroup>
-        <Label>Ingredients:</Label>
-        {hasComponents && (
-          <ul>
-            {this.state.components.map((component, id) => (
-              <Component
-                key={id}
-                component={component}
-                ingredients={ingredients}
-              />
-            ))}
-          </ul>
-        )}
-        <FormGroup>
-          <Input
-            type="select"
-            name="ingredientId"
-            value={this.state.currentIngredientId}
-            onChange={e => this.onChange('currentIngredientId', e)}
-          >
-            <option value="">Select an ingredient</option>
-            {sortBy(ingredients, 'name').map(ingredient => (
-              <option key={ingredient.id} value={ingredient.id}>
-                {ingredient.name}
-              </option>
-            ))}
-          </Input>
-        </FormGroup>
-        <FormGroup>
-          {curretIngredient && (
-            <InputGroup>
-              <Input
-                name="quantity"
-                placeholder="Enter a quantity"
-                type="number"
-                value={this.state.currentQuantity}
-                onChange={e => this.onChange('currentQuantity', e)}
-              />
-              <InputGroupAddon addonType="append">
-                <Input
-                  type="select"
-                  name="ingredientId"
-                  value={this.state.currentUnit || curretIngredient.unit}
-                  onChange={e => this.onChange('currentUnit', e)}
-                >
-                  {Object.keys(UNITS).map(value => (
-                    <option key={value} value={value}>
-                      {UNITS[value]}
-                    </option>
-                  ))}
-                </Input>
-              </InputGroupAddon>
-            </InputGroup>
-          )}
-        </FormGroup>
-        <Button onClick={this.addComponent}>Add ingredient</Button>
-        <hr />
-        <Button type="submit">Add recipe</Button>
-      </Form>
-    );
-  }
-}
-
 class RecipesList extends React.Component {
+  state = { selectedRecipe: null };
+
+  editRecipe = recipe => {
+    this.setState({ selectedRecipe: recipe });
+  };
+
   render() {
     const {
       recipes,
@@ -269,6 +135,8 @@ class RecipesList extends React.Component {
       updateRecipe,
       removeRecipe
     } = this.props;
+    const { selectedRecipe } = this.state;
+    const header = selectedRecipe ? 'Edit recipe' : 'Add a recipe';
 
     return (
       <ErrorBoundary>
@@ -280,18 +148,20 @@ class RecipesList extends React.Component {
                 <List
                   recipes={recipes}
                   ingredients={ingredients}
+                  editRecipe={this.editRecipe}
                   updateRecipe={updateRecipe}
                   removeRecipe={removeRecipe}
                 />
               </Col>
               <Col md={4}>
                 <Card>
-                  <CardHeader>Add a recipe</CardHeader>
+                  <CardHeader>{header}</CardHeader>
                   <CardBody>
                     <RecipeForm
-                      onSubmit={addRecipe}
+                      onSubmit={selectedRecipe ? updateRecipe : addRecipe}
                       nextId={recipes.length + 1}
                       ingredients={ingredients}
+                      recipe={selectedRecipe}
                     />
                   </CardBody>
                 </Card>

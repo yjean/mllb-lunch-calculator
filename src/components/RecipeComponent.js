@@ -23,6 +23,11 @@ const RecipeComponent = ({ component, ingredients, remove }) => {
       <Alert color="danger">
         Ingredient with id <code>{component.ingredientId}</code> has been
         removed.
+        {remove && (
+          <Button size="sm" color="danger" onClick={remove}>
+            delete
+          </Button>
+        )}
       </Alert>
     );
   }

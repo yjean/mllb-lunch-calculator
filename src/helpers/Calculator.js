@@ -48,7 +48,7 @@ const GRAM_RATIOS = {
   tbsp: 0.067628045117839
 };
 
-function scaledQuantity(quantity, fromUnit, toUnit) {
+export function scaledQuantity(quantity, fromUnit, toUnit) {
   const ratio = GRAM_RATIOS[fromUnit] || 1;
   const inGram = quantity * 1 / ratio;
 

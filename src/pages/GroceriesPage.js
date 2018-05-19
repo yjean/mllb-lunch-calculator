@@ -3,38 +3,65 @@ import {
   Card,
   CardBody,
   CardHeader,
+  CardTitle,
   Col,
   Container,
   Form,
   FormGroup,
   Input,
   Label,
+  ListGroup,
+  ListGroupItem,
   Row
 } from 'reactstrap';
+import { evaluateRecipePrice, scaledQuantity } from '../helpers/Calculator';
 
 import Amount from '../Amount';
 import ErrorBoundary from '../ErrorBoundary';
+import Quantity from '../components/Quantity';
 import React from 'react';
-import { evaluateRecipePrice } from '../helpers/Calculator';
+
+const GroceryComponent = ({ ratio, component, ingredient }) => (
+  <ListGroupItem>
+    {ingredient.name}{' '}
+    <Quantity
+      q={scaledQuantity(
+        component.quantity * ratio,
+        component.unit || ingredient.unit,
+        ingredient.unit
+      )}
+    />{' '}
+    {ingredient.unit}
+  </ListGroupItem>
+);
 
 const Summary = ({ recipe, numberOfPersons, ingredients }) => {
   const recipePrice = evaluateRecipePrice(recipe, ingredients);
+  const peopleRatio = numberOfPersons / recipe.numberOfPersons;
 
   return (
-    <div className="Summary">
-      <dl>
-        <dt>Recipe price (for {recipe.numberOfPersons} persons)</dt>
-        <dd>
-          <Amount amount={recipePrice} />
-        </dd>
-        <dt>For {numberOfPersons} persons</dt>
-        <dd>
-          <Amount
-            amount={recipePrice * numberOfPersons / recipe.numberOfPersons}
-          />
-        </dd>
-      </dl>
-    </div>
+    <Card className="Summary">
+      <CardHeader>
+        <h2>{recipe.name}</h2>
+        Price: <Amount amount={recipePrice * peopleRatio} /> ({numberOfPersons}{' '}
+        people)
+      </CardHeader>
+      <CardBody>
+        <CardTitle>Ingredients for {recipe.numberOfPersons} people</CardTitle>
+        <ListGroup>
+          {recipe.components.map((component, index) => (
+            <GroceryComponent
+              key={index}
+              ratio={peopleRatio}
+              component={component}
+              ingredient={ingredients.find(
+                i => i.id === parseInt(component.ingredientId, 10)
+              )}
+            />
+          ))}
+        </ListGroup>
+      </CardBody>
+    </Card>
   );
 };
 
@@ -95,7 +122,7 @@ class CalculatorForm extends React.Component {
   }
 }
 
-class CalculatorPage extends React.Component {
+class GroceriesPage extends React.Component {
   state = {
     recipe: null,
     numberOfPersons: 0
@@ -113,7 +140,7 @@ class CalculatorPage extends React.Component {
 
     return (
       <ErrorBoundary>
-        <div className="CalculatorPage">
+        <div className="GroceriesPage">
           <Container>
             <h1>Groceries calculator</h1>
             <Row>
@@ -146,4 +173,4 @@ class CalculatorPage extends React.Component {
   }
 }
 
-export default CalculatorPage;
+export default GroceriesPage;

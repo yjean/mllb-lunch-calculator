@@ -3,7 +3,7 @@ import './App.css';
 import React, { Component } from 'react';
 import { Route, BrowserRouter as Router } from 'react-router-dom';
 
-import CalculatorPage from './pages/CalculatorPage';
+import GroceriesPage from './pages/GroceriesPage';
 import IngredientsPage from './pages/IngredientsPage';
 import MainNavigation from './MainNavigation';
 import RecipesPage from './pages/RecipesPage';
@@ -103,7 +103,7 @@ class App extends Component {
               exact
               path="/"
               component={() => (
-                <CalculatorPage
+                <GroceriesPage
                   recipes={this.state.recipes}
                   ingredients={this.state.ingredients}
                 />

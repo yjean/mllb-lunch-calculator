@@ -47,7 +47,7 @@ const Summary = ({ recipe, numberOfPersons, ingredients }) => {
         people)
       </CardHeader>
       <CardBody>
-        <CardTitle>Ingredients for {recipe.numberOfPersons} people</CardTitle>
+        <CardTitle>Ingredients for {numberOfPersons} people</CardTitle>
         <ListGroup>
           {recipe.components.map((component, index) => (
             <GroceryComponent

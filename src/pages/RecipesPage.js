@@ -121,11 +121,13 @@ const List = ({
 );
 
 class RecipesList extends React.Component {
-  state = { selectedRecipe: null };
+  state = { selectedRecipe: null, pattern: '' };
 
   editRecipe = recipe => {
     this.setState({ selectedRecipe: recipe });
   };
+  setPattern = ({ target }) => this.setState({ pattern: target.value });
+  resetPattern = () => this.setPattern({ target: { value: '' } });
 
   render() {
     const {
@@ -137,6 +139,9 @@ class RecipesList extends React.Component {
     } = this.props;
     const { selectedRecipe } = this.state;
     const header = selectedRecipe ? 'Edit recipe' : 'Add a recipe';
+    const filteredList = this.state.pattern
+      ? recipes.filter(r => r.name.match(new RegExp(this.state.pattern, 'i')))
+      : recipes;
 
     return (
       <ErrorBoundary>
@@ -145,8 +150,24 @@ class RecipesList extends React.Component {
             <h1>Recipes</h1>
             <Row>
               <Col md={8}>
+                <InputGroup className="IngredientsList__pattern">
+                  <Input
+                    type="text"
+                    placeholder="Search by name"
+                    value={this.state.pattern}
+                    onChange={this.setPattern}
+                  />
+                  <InputGroupAddon
+                    className="gl_clickable"
+                    addonType="append"
+                    onClick={this.resetPattern}
+                  >
+                    X
+                  </InputGroupAddon>
+                </InputGroup>
+
                 <List
-                  recipes={recipes}
+                  recipes={filteredList}
                   ingredients={ingredients}
                   editRecipe={this.editRecipe}
                   updateRecipe={updateRecipe}

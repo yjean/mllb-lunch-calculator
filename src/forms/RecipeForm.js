@@ -107,10 +107,10 @@ class RecipeForm extends React.Component {
           />
         </FormGroup>
         <FormGroup>
-          <Label>Number of persons:</Label>
+          <Label>Number of people:</Label>
           <Input
             name="numberOfPersons"
-            placeholder="Enter a number of persons"
+            placeholder="Enter a number of people"
             type="number"
             value={this.state.numberOfPersons}
             onChange={e => this.onChange('numberOfPersons', e)}
@@ -173,7 +173,9 @@ class RecipeForm extends React.Component {
         </FormGroup>
         <Button onClick={this.addComponent}>Add ingredient</Button>
         <hr />
-        <Button type="submit">Save</Button>
+        <div className="text-right">
+          <Button type="submit">Save</Button>
+        </div>
       </Form>
     );
   }

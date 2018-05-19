@@ -3,12 +3,14 @@ import '../Recipe.css';
 import {
   Alert,
   Button,
+  ButtonGroup,
   Card,
   CardBody,
   CardFooter,
   CardHeader,
   CardTitle,
   Col,
+  Collapse,
   Container,
   Form,
   FormGroup,
@@ -31,13 +33,16 @@ class Recipe extends React.Component {
     super(props);
 
     this.state = {
-      ...props.recipe
+      ...props.recipe,
+      collapsed: true
     };
   }
 
   notesChanged = event => {
     this.setState({ notes: event.target.value });
   };
+
+  toggleCollapsed = () => this.setState({ collapsed: !this.state.collapsed });
 
   render() {
     const {
@@ -49,49 +54,64 @@ class Recipe extends React.Component {
     } = this.props;
 
     return (
-      <Card className="Recipe">
-        <CardHeader>
-          <div className="float-right">
-            <Button color="primary" onClick={() => editRecipe(recipe)}>
-              edit
-            </Button>
-          </div>
-          {recipe.name}
-        </CardHeader>
-        <CardBody>
-          <CardTitle>For {recipe.numberOfPersons} person(s)</CardTitle>
-          <Label>Ingredients:</Label>
-          <ul>
-            {recipe.components.map((component, index) => (
-              <RecipeComponent
-                key={index}
-                component={component}
-                ingredients={ingredients}
-              />
-            ))}
-          </ul>
-          <Label>Notes:</Label>
-          <Input
-            type="textarea"
-            rows="15"
-            value={this.state.notes}
-            onChange={this.notesChanged}
-          />
-        </CardBody>
-        <CardFooter>
+      <Card
+        className={`Recipe Recipe--${
+          this.state.collapsed ? 'collapsed' : 'expanded'
+        }`}
+      >
+        <CardHeader className="Recipe__header">
           <Row>
             <Col>
+              <h2>{recipe.name}</h2>
               Price:{' '}
-              <Amount amount={evaluateRecipePrice(recipe, ingredients)} />
+              <Amount amount={evaluateRecipePrice(recipe, ingredients)} /> ({
+                recipe.numberOfPersons
+              }{' '}
+              people)
             </Col>
             <Col className="text-right">
-              <Button onClick={() => updateRecipe(this.state)}>Save</Button>{' '}
-              <Button color="danger" onClick={() => removeRecipe(recipe)}>
-                Delete
-              </Button>
+              <ButtonGroup>
+                <Button color="info" onClick={this.toggleCollapsed}>
+                  {this.state.collapsed ? 'Show' : 'Hide'}
+                </Button>
+                <Button onClick={() => editRecipe(recipe)}>edit</Button>
+              </ButtonGroup>
             </Col>
           </Row>
-        </CardFooter>
+        </CardHeader>
+        <Collapse isOpen={!this.state.collapsed}>
+          <CardBody className="Recipe__body">
+            <CardTitle>
+              Ingredients for {recipe.numberOfPersons} people
+            </CardTitle>
+            <ul>
+              {recipe.components.map((component, index) => (
+                <RecipeComponent
+                  key={index}
+                  component={component}
+                  ingredients={ingredients}
+                />
+              ))}
+            </ul>
+            <Label>Notes:</Label>
+            <Input
+              type="textarea"
+              rows="15"
+              value={this.state.notes}
+              onChange={this.notesChanged}
+            />
+          </CardBody>
+          <CardFooter className="Recipe__footer">
+            <Row>
+              <Col className="text-right">
+                <Button onClick={() => updateRecipe(this.state)}>Save</Button>{' '}
+                <Button color="danger" onClick={() => removeRecipe(recipe)}>
+                  Delete
+                </Button>
+              </Col>
+            </Row>
+          </CardFooter>
+        </Collapse>
       </Card>
     );
   }

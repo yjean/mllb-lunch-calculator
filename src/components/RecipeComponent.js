@@ -1,6 +1,12 @@
-import { Alert, Button } from 'reactstrap';
+import { Alert, Button, Col, Row } from 'reactstrap';
 
 import React from 'react';
+
+const RemoveComponent = ({ onClick }) => (
+  <Button size="sm" color="danger" onClick={onClick} outline>
+    X
+  </Button>
+);
 
 const RecipeComponent = ({ component, ingredients, remove }) => {
   const id = parseInt(component.ingredientId, 10);
@@ -9,26 +15,28 @@ const RecipeComponent = ({ component, ingredients, remove }) => {
   if (ingredient) {
     return (
       <li>
-        {ingredient.name} {component.quantity}{' '}
-        {component.unit || ingredient.unit}
-        {remove && (
-          <Button size="sm" color="danger" onClick={remove}>
-            delete
-          </Button>
-        )}
+        <Row>
+          <Col xs="9">
+            {ingredient.name} {component.quantity}{' '}
+            {component.unit || ingredient.unit}
+          </Col>
+          <Col xs="3">{remove && <RemoveComponent onClick={remove} />}</Col>
+        </Row>
       </li>
     );
   } else {
     return (
-      <Alert color="danger">
-        Ingredient with id <code>{component.ingredientId}</code> has been
-        removed.
-        {remove && (
-          <Button size="sm" color="danger" onClick={remove}>
-            delete
-          </Button>
-        )}
-      </Alert>
+      <li>
+        <Row>
+          <Col>
+            <Alert color="danger">
+              Ingredient with id <code>{component.ingredientId}</code> has been
+              removed.
+              {remove && <RemoveComponent onClick={remove} />}
+            </Alert>
+          </Col>
+        </Row>
+      </li>
     );
   }
 };

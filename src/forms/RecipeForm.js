@@ -173,7 +173,7 @@ class RecipeForm extends React.Component {
         </FormGroup>
         <Button onClick={this.addComponent}>Add ingredient</Button>
         <hr />
-        <Button type="submit">Add recipe</Button>
+        <Button type="submit">Save</Button>
       </Form>
     );
   }

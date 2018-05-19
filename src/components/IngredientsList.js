@@ -20,9 +20,9 @@ const Ingredient = ({ ingredient, removeIngredient, editIngredient }) => {
     <ListGroupItem>
       <div className="float-right">
         <ButtonGroup>
-          <Button onClick={() => editIngredient(ingredient)}>edit</Button>
+          <Button onClick={() => editIngredient(ingredient)}>Edit</Button>
           <Button color="danger" onClick={() => removeIngredient(ingredient)}>
-            delete
+            Delete
           </Button>
         </ButtonGroup>
       </div>

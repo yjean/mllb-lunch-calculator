@@ -74,7 +74,7 @@ class Recipe extends React.Component {
                 <Button color="info" onClick={this.toggleCollapsed}>
                   {this.state.collapsed ? 'Show' : 'Hide'}
                 </Button>
-                <Button onClick={() => editRecipe(recipe)}>edit</Button>
+                <Button onClick={() => editRecipe(recipe)}>Edit</Button>
               </ButtonGroup>
             </Col>
           </Row>

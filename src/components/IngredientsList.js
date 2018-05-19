@@ -1,4 +1,14 @@
-import { Button, Input, ListGroup, ListGroupItem } from 'reactstrap';
+import './IngredientsList.css';
+
+import {
+  Button,
+  ButtonGroup,
+  Input,
+  InputGroup,
+  InputGroupAddon,
+  ListGroup,
+  ListGroupItem
+} from 'reactstrap';
 
 import React from 'react';
 
@@ -9,20 +19,12 @@ const Ingredient = ({ ingredient, removeIngredient, editIngredient }) => {
   return (
     <ListGroupItem>
       <div className="float-right">
-        <Button
-          size="sm"
-          color="primary"
-          onClick={() => editIngredient(ingredient)}
-        >
-          edit
-        </Button>
-        <Button
-          size="sm"
-          color="danger"
-          onClick={() => removeIngredient(ingredient)}
-        >
-          delete
-        </Button>
+        <ButtonGroup>
+          <Button onClick={() => editIngredient(ingredient)}>edit</Button>
+          <Button color="danger" onClick={() => removeIngredient(ingredient)}>
+            delete
+          </Button>
+        </ButtonGroup>
       </div>
       {ingredient.name}{' '}
       {(hasPrice || hasUnit) && (
@@ -35,9 +37,10 @@ const Ingredient = ({ ingredient, removeIngredient, editIngredient }) => {
 };
 
 class IngredientsList extends React.Component {
-  state = { pattern: null };
+  state = { pattern: '' };
 
   setPattern = ({ target }) => this.setState({ pattern: target.value });
+  resetPattern = () => this.setPattern({ target: { value: '' } });
 
   render() {
     const { ingredients, removeIngredient, editIngredient } = this.props;
@@ -49,14 +52,21 @@ class IngredientsList extends React.Component {
 
     return (
       <div className="IngredientsList">
-        <p>
+        <InputGroup className="IngredientsList__pattern">
           <Input
             type="text"
             placeholder="Search by name"
             value={this.state.pattern}
             onChange={this.setPattern}
           />
-        </p>
+          <InputGroupAddon
+            className="gl_clickable"
+            addonType="append"
+            onClick={this.resetPattern}
+          >
+            X
+          </InputGroupAddon>
+        </InputGroup>
         <ListGroup>
           {filteredList.map(ingredient => (
             <Ingredient

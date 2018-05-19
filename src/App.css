@@ -1,4 +1,5 @@
-.App {
+.gl_clickable:hover {
+  cursor: pointer;
 }
 
 .App-logo {

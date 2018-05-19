@@ -74,7 +74,9 @@ class IngredientForm extends React.Component {
             ))}
           </Input>
         </FormGroup>
-        <Button type="submit">Save</Button>
+        <div className="text-right">
+          <Button type="submit">Save</Button>
+        </div>
       </Form>
     );
   }

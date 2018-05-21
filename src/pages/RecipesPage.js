@@ -197,7 +197,7 @@ class RecipesList extends React.Component {
                 />
               </Col>
               <Col md={4}>
-                <Card>
+                <Card className="sticky-top">
                   <CardHeader>{header}</CardHeader>
                   <CardBody>
                     <RecipeForm

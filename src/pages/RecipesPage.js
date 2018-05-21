@@ -200,7 +200,7 @@ class RecipesList extends React.Component {
                   <CardBody>
                     <RecipeForm
                       onSubmit={selectedRecipe ? updateRecipe : addRecipe}
-                      nextId={recipes.length + 1}
+                      nextId={(max(map(recipes, 'id')) || 0) + 1}
                       ingredients={ingredients}
                       recipe={selectedRecipe}
                     />

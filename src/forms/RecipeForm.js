@@ -90,7 +90,7 @@ class RecipeForm extends React.Component {
     const { ingredients } = this.props;
     const currentIngredientId = parseInt(this.state.currentIngredientId, 10);
     const hasComponents = this.state.components.length > 0;
-    const curretIngredient =
+    const currentIngredient =
       currentIngredientId > 0
         ? ingredients.find(i => i.id === currentIngredientId)
         : null;
@@ -145,7 +145,7 @@ class RecipeForm extends React.Component {
           </Input>
         </FormGroup>
         <FormGroup>
-          {curretIngredient && (
+          {currentIngredient && (
             <InputGroup>
               <Input
                 name="quantity"
@@ -158,7 +158,7 @@ class RecipeForm extends React.Component {
                 <Input
                   type="select"
                   name="ingredientId"
-                  value={this.state.currentUnit || curretIngredient.unit}
+                  value={this.state.currentUnit || currentIngredient.unit}
                   onChange={e => this.onChange('currentUnit', e)}
                 >
                   {Object.keys(UNITS).map(value => (

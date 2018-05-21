@@ -94,6 +94,9 @@ class App extends Component {
   };
 
   render() {
+    console.log(this.state.ingredients);
+    console.log(this.state.recipes);
+
     return (
       <div className="App">
         <Router>

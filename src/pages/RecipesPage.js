@@ -27,6 +27,8 @@ import React from 'react';
 import RecipeComponent from '../components/RecipeComponent';
 import RecipeForm from '../forms/RecipeForm';
 import { evaluateRecipePrice } from '../helpers/Calculator';
+import map from 'lodash/map';
+import max from 'lodash/max';
 
 class Recipe extends React.Component {
   constructor(props) {

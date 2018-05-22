@@ -6,7 +6,6 @@ import IngredientsList from '../components/IngredientsList';
 import React from 'react';
 import map from 'lodash/map';
 import max from 'lodash/max';
-import sortBy from 'lodash/sortBy';
 
 class IngredientsPage extends React.Component {
   state = {
@@ -35,7 +34,7 @@ class IngredientsPage extends React.Component {
             <Row>
               <Col md={8}>
                 <IngredientsList
-                  ingredients={sortBy(ingredients, 'name')}
+                  ingredients={ingredients}
                   editIngredient={this.editIngredient}
                   removeIngredient={removeIngredient}
                 />

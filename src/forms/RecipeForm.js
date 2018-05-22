@@ -21,7 +21,6 @@ import React from 'react';
 import RecipeComponent from '../components/RecipeComponent';
 import { UNITS } from './IngredientForm';
 import slice from 'lodash/slice';
-import sortBy from 'lodash/sortBy';
 
 const initialFormState = {
   id: 0,
@@ -137,7 +136,7 @@ class RecipeForm extends React.Component {
             onChange={e => this.onChange('currentIngredientId', e)}
           >
             <option value="">Select an ingredient</option>
-            {sortBy(ingredients, 'name').map(ingredient => (
+            {ingredients.map(ingredient => (
               <option key={ingredient.id} value={ingredient.id}>
                 {ingredient.name}
               </option>

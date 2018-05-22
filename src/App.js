@@ -8,6 +8,7 @@ import IngredientsPage from './pages/IngredientsPage';
 import MainNavigation from './MainNavigation';
 import RecipesPage from './pages/RecipesPage';
 import slice from 'lodash/slice';
+import sortBy from 'lodash/sortBy';
 
 class App extends Component {
   constructor(props) {
@@ -94,8 +95,8 @@ class App extends Component {
   };
 
   render() {
-    console.log(this.state.ingredients);
-    console.log(this.state.recipes);
+    const ingredients = sortBy(this.state.ingredients, 'name');
+    const recipes = sortBy(this.state.recipes, 'name');
 
     return (
       <div className="App">
@@ -106,17 +107,14 @@ class App extends Component {
               exact
               path="/"
               component={() => (
-                <GroceriesPage
-                  recipes={this.state.recipes}
-                  ingredients={this.state.ingredients}
-                />
+                <GroceriesPage recipes={recipes} ingredients={ingredients} />
               )}
             />
             <Route
               path="/ingredients"
               component={() => (
                 <IngredientsPage
-                  ingredients={this.state.ingredients}
+                  ingredients={ingredients}
                   addIngredient={this.addIngredient}
                   updateIngredient={this.updateIngredient}
                   removeIngredient={this.removeIngredient}
@@ -127,8 +125,8 @@ class App extends Component {
               path="/recipes"
               component={() => (
                 <RecipesPage
-                  recipes={this.state.recipes}
-                  ingredients={this.state.ingredients}
+                  recipes={recipes}
+                  ingredients={ingredients}
                   addRecipe={this.addRecipe}
                   updateRecipe={this.updateRecipe}
                   removeRecipe={this.removeRecipe}

@@ -1,20 +1,11 @@
 import {
-  Alert,
   Button,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-  Col,
-  Container,
   Form,
   FormGroup,
   Input,
   InputGroup,
   InputGroupAddon,
-  Label,
-  Row
+  Label
 } from 'reactstrap';
 
 import React from 'react';

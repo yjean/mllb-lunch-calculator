@@ -1,7 +1,6 @@
 import '../Recipe.css';
 
 import {
-  Alert,
   Button,
   ButtonGroup,
   Card,
@@ -12,8 +11,6 @@ import {
   Col,
   Collapse,
   Container,
-  Form,
-  FormGroup,
   Input,
   InputGroup,
   InputGroupAddon,

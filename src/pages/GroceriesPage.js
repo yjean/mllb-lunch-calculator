@@ -3,85 +3,44 @@ import {
   Card,
   CardBody,
   CardHeader,
-  CardTitle,
   Col,
   Container,
   Form,
   FormGroup,
   Input,
   Label,
-  ListGroup,
-  ListGroupItem,
   Row
 } from 'reactstrap';
-import { evaluateRecipePrice, scaledQuantity } from '../helpers/Calculator';
 
-import Amount from '../Amount';
 import ErrorBoundary from '../ErrorBoundary';
-import Quantity from '../components/Quantity';
+import GroceriesSummary from '../components/GroceriesSummary';
 import React from 'react';
-
-const GroceryComponent = ({ ratio, component, ingredient }) => (
-  <ListGroupItem>
-    {ingredient.name}{' '}
-    <Quantity
-      q={scaledQuantity(
-        component.quantity * ratio,
-        component.unit || ingredient.unit,
-        ingredient.unit
-      )}
-    />{' '}
-    {ingredient.unit}
-  </ListGroupItem>
-);
-
-const Summary = ({ recipe, numberOfPersons, ingredients }) => {
-  const recipePrice = evaluateRecipePrice(recipe, ingredients);
-  const peopleRatio = numberOfPersons / recipe.numberOfPersons;
-
-  return (
-    <Card className="Summary">
-      <CardHeader>
-        <h2>{recipe.name}</h2>
-        Price: <Amount amount={recipePrice * peopleRatio} /> ({numberOfPersons}{' '}
-        people)
-      </CardHeader>
-      <CardBody>
-        <CardTitle>Ingredients for {numberOfPersons} people</CardTitle>
-        <ListGroup>
-          {recipe.components.map((component, index) => (
-            <GroceryComponent
-              key={index}
-              ratio={peopleRatio}
-              component={component}
-              ingredient={ingredients.find(
-                i => i.id === parseInt(component.ingredientId, 10)
-              )}
-            />
-          ))}
-        </ListGroup>
-      </CardBody>
-    </Card>
-  );
-};
 
 class CalculatorForm extends React.Component {
   state = {
-    numberOfPersons: 0,
-    recipeId: 0
+    numberOfPersons: 25,
+    recipeIds: [25, 2, 3]
   };
 
   onChange = (field, e) => {
     this.setState({ [field]: e.target.value });
   };
 
+  onSelectChange = (field, e) => {
+    const options = e.target.options;
+    const selectedOptions = [...options].filter(({ selected }) => selected);
+
+    this.setState({ [field]: selectedOptions.map(o => o.value) });
+  };
+
   onSubmit = e => {
     e.preventDefault();
-    const recipeId = parseInt(this.state.recipeId, 10);
-    const recipe = this.props.recipes.find(r => r.id === recipeId);
+    const { recipeIds } = this.state;
+    const ids = recipeIds.map(id => parseInt(id, 10));
+    const recipes = this.props.recipes.filter(r => ids.includes(r.id));
 
     this.props.onSubmit({
-      recipe,
+      recipes,
       numberOfPersons: this.state.numberOfPersons
     });
   };
@@ -105,8 +64,9 @@ class CalculatorForm extends React.Component {
           <Input
             type="select"
             name="recipeId"
-            value={this.state.recipeId}
-            onChange={e => this.onChange('recipeId', e)}
+            multiple={true}
+            value={this.state.recipeIds}
+            onChange={e => this.onSelectChange('recipeIds', e)}
           >
             <option value="">Select a recipe</option>
             {recipes.map(recipe => (
@@ -116,7 +76,9 @@ class CalculatorForm extends React.Component {
             ))}
           </Input>
         </FormGroup>
-        <Button>Submit</Button>
+        <div className="text-right">
+          <Button>See</Button>
+        </div>
       </Form>
     );
   }
@@ -124,13 +86,13 @@ class CalculatorForm extends React.Component {
 
 class GroceriesPage extends React.Component {
   state = {
-    recipe: null,
+    recipes: [],
     numberOfPersons: 0
   };
 
-  calculate = ({ recipe, numberOfPersons }) => {
+  calculate = ({ recipes, numberOfPersons }) => {
     this.setState({
-      recipe,
+      recipes,
       numberOfPersons
     });
   };
@@ -145,10 +107,10 @@ class GroceriesPage extends React.Component {
             <h1>Groceries calculator</h1>
             <Row>
               <Col md={8}>
-                {this.state.recipe && (
-                  <Summary
+                {this.state.recipes.length > 0 && (
+                  <GroceriesSummary
                     ingredients={ingredients}
-                    recipe={this.state.recipe}
+                    recipes={this.state.recipes}
                     numberOfPersons={this.state.numberOfPersons}
                   />
                 )}

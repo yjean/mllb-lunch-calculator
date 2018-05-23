@@ -18,8 +18,8 @@ import React from 'react';
 
 class CalculatorForm extends React.Component {
   state = {
-    numberOfPersons: 25,
-    recipeIds: [25, 2, 3]
+    numberOfPersons: 0,
+    recipeIds: []
   };
 
   onChange = (field, e) => {

@@ -1,4 +1,5 @@
 import {
+  Badge,
   Card,
   CardBody,
   CardHeader,
@@ -63,43 +64,54 @@ class GroceriesSummary extends React.Component {
     let cartPrice = 0;
 
     return (
-      <Table>
-        <thead>
-          <tr>
-            <th>Ingredient</th>
-            <th>Quantity</th>
-            <th>Price</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Object.keys(this.cart).map(ingredientId => {
-            const id = parseInt(ingredientId, 10);
-            const ingredient = ingredients.find(i => i.id === id);
-            const quantity = this.cart[ingredientId];
-            const price = evaluateIngredientPrice(ingredient, quantity);
-            cartPrice += price;
+      <React.Fragment>
+        <ul className="list-inline">
+          {recipes.map(r => (
+            <li className="list-inline-item" key={r.id}>
+              <Badge color="secondary" pill>
+                {r.name}
+              </Badge>
+            </li>
+          ))}
+        </ul>
+        <Table size="sm">
+          <thead>
+            <tr>
+              <th>Ingredient</th>
+              <th>Quantity</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            {Object.keys(this.cart).map(ingredientId => {
+              const id = parseInt(ingredientId, 10);
+              const ingredient = ingredients.find(i => i.id === id);
+              const quantity = this.cart[ingredientId];
+              const price = evaluateIngredientPrice(ingredient, quantity);
+              cartPrice += price;
 
-            return (
-              <tr key={ingredientId}>
-                <td>{ingredient.name}</td>
-                <td>
-                  <Quantity q={this.cart[ingredientId]} /> {ingredient.unit}
-                </td>
-                <td className="text-right">
-                  <Amount amount={price} />
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colSpan={3} className="text-right">
-              <Amount amount={cartPrice} />
-            </td>
-          </tr>
-        </tfoot>
-      </Table>
+              return (
+                <tr key={ingredientId}>
+                  <td>{ingredient.name}</td>
+                  <td>
+                    <Quantity q={this.cart[ingredientId]} /> {ingredient.unit}
+                  </td>
+                  <td className="text-right">
+                    <Amount amount={price} />
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colSpan={3} className="text-right">
+                <Amount amount={cartPrice} />
+              </td>
+            </tr>
+          </tfoot>
+        </Table>
+      </React.Fragment>
     );
   }
 }

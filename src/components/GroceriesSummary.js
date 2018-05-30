@@ -1,36 +1,9 @@
-import {
-  Badge,
-  Card,
-  CardBody,
-  CardHeader,
-  CardTitle,
-  ListGroup,
-  ListGroupItem,
-  Table
-} from 'reactstrap';
-import {
-  evaluateIngredientPrice,
-  evaluateRecipePrice,
-  scaledQuantity
-} from '../helpers/Calculator';
+import { Badge, Table } from 'reactstrap';
+import { evaluateIngredientPrice, scaledQuantity } from '../helpers/Calculator';
 
 import Amount from '../Amount';
 import Quantity from '../components/Quantity';
 import React from 'react';
-
-const GroceryComponent = ({ ratio, component, ingredient }) => (
-  <ListGroupItem>
-    {ingredient.name}{' '}
-    <Quantity
-      q={scaledQuantity(
-        component.quantity * ratio,
-        component.unit || ingredient.unit,
-        ingredient.unit
-      )}
-    />{' '}
-    {ingredient.unit}
-  </ListGroupItem>
-);
 
 class GroceriesSummary extends React.Component {
   cart = {};

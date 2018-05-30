@@ -1,3 +1,10 @@
 .Recipe {
   margin-bottom: 1.25rem;
 }
+
+.Recipe__customPeopleCount {
+  display: inline-block;
+  width: 3em;
+  margin: 0 0.3em;
+  padding: 0;
+}

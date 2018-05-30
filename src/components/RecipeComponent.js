@@ -1,5 +1,6 @@
 import { Alert, Button, Col, Row } from 'reactstrap';
 
+import Quantity from './Quantity';
 import React from 'react';
 
 const RemoveComponent = ({ onClick }) => (
@@ -8,7 +9,7 @@ const RemoveComponent = ({ onClick }) => (
   </Button>
 );
 
-const RecipeComponent = ({ component, ingredients, remove }) => {
+const RecipeComponent = ({ component, ingredients, remove, ratio = 1 }) => {
   const id = parseInt(component.ingredientId, 10);
   const ingredient = ingredients.find(i => i.id === id);
 
@@ -17,7 +18,7 @@ const RecipeComponent = ({ component, ingredients, remove }) => {
       <li>
         <Row>
           <Col xs="9">
-            {ingredient.name} {component.quantity}{' '}
+            {ingredient.name} <Quantity q={component.quantity * ratio} />{' '}
             {component.unit || ingredient.unit}
           </Col>
           <Col xs="3">{remove && <RemoveComponent onClick={remove} />}</Col>

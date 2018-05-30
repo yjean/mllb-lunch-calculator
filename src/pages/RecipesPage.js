@@ -33,9 +33,14 @@ class Recipe extends React.Component {
 
     this.state = {
       ...props.recipe,
-      collapsed: true
+      collapsed: true,
+      peopleCount: props.recipe.numberOfPersons
     };
   }
+
+  onChange = (field, e) => {
+    this.setState({ [field]: e.target.value });
+  };
 
   notesChanged = event => {
     this.setState({ notes: event.target.value });
@@ -81,7 +86,17 @@ class Recipe extends React.Component {
         <Collapse isOpen={!this.state.collapsed}>
           <CardBody className="Recipe__body">
             <CardTitle>
-              Ingredients for {recipe.numberOfPersons} people
+              Ingredients for
+              <Input
+                className="Recipe__customPeopleCount"
+                name="peopleCount"
+                type="number"
+                min="1"
+                max="42"
+                value={this.state.peopleCount}
+                onChange={e => this.onChange('peopleCount', e)}
+              />
+              people
             </CardTitle>
             <ul>
               {recipe.components.map((component, index) => (
@@ -89,6 +104,7 @@ class Recipe extends React.Component {
                   key={index}
                   component={component}
                   ingredients={ingredients}
+                  ratio={this.state.peopleCount / recipe.numberOfPersons}
                 />
               ))}
             </ul>
